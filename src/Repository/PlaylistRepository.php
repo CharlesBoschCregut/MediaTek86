@@ -16,6 +16,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
+    
+    private const SELECT_PARAM = 'p.id id';
+    private const ADDSELECT_NAME = 'p.name name';
+    private const ADDSELECT_CATEGORIE = 'c.name categoriename';
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Playlist::class);
@@ -47,9 +52,9 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre): array{
         return $this->createQueryBuilder('p')
-                ->select('p.id id')
-                ->addSelect('p.name name')
-                ->addSelect('c.name categoriename')
+                ->select(self::SELECT_PARAM)
+                ->addSelect(self::ADDSELECT_NAME)
+                ->addSelect(self::ADDSELECT_CATEGORIE)
                 ->leftjoin('p.formations', 'f')
                 ->leftjoin('f.categories', 'c')
                 ->groupBy('p.id')
@@ -74,9 +79,9 @@ class PlaylistRepository extends ServiceEntityRepository
         }    
         if($table==""){      
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
+                    ->select(self::SELECT_PARAM)
+                    ->addSelect(self::ADDSELECT_NAME)
+                    ->addSelect(self::ADDSELECT_CATEGORIE)
                     ->leftjoin('p.formations', 'f')
                     ->leftjoin('f.categories', 'c')
                     ->where('p.'.$champ.' LIKE :valeur')
@@ -89,9 +94,9 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->getResult();              
         }else{   
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
+                    ->select(self::SELECT_PARAM)
+                    ->addSelect(self::ADDSELECT_NAME)
+                    ->addSelect(self::ADDSELECT_CATEGORIE)
                     ->leftjoin('p.formations', 'f')
                     ->leftjoin('f.categories', 'c')
                     ->where('c.'.$champ.' LIKE :valeur')

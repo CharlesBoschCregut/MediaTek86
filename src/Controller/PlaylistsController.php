@@ -32,7 +32,9 @@ class PlaylistsController extends AbstractController {
      * 
      * @var CategorieRepository
      */
-    private $categorieRepository;    
+    private $categorieRepository; 
+    
+    private const CHEMIN_PAGE_PLAYLIST = "pages/playlists.html.twig";
     
     function __construct(PlaylistRepository $playlistRepository, 
             CategorieRepository $categorieRepository,
@@ -49,7 +51,7 @@ class PlaylistsController extends AbstractController {
     public function index(): Response{
         $playlists = $this->playlistRepository->findAllOrderBy('name', 'ASC');
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
             'playlists' => $playlists,
             'categories' => $categories            
         ]);
@@ -64,7 +66,7 @@ class PlaylistsController extends AbstractController {
     public function sort($champ, $ordre): Response{
         $playlists = $this->playlistRepository->findAllOrderBy($champ, $ordre);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
             'playlists' => $playlists,
             'categories' => $categories            
         ]);
@@ -81,7 +83,7 @@ class PlaylistsController extends AbstractController {
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValue($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
             'playlists' => $playlists,
             'categories' => $categories,            
             'valeur' => $valeur,
@@ -98,11 +100,11 @@ class PlaylistsController extends AbstractController {
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
-        return $this->render("pages/playlist.html.twig", [
+        return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
             'playlistformations' => $playlistFormations
         ]);        
-    }       
+    }
     
 }
