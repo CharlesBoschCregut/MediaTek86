@@ -50,7 +50,8 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $ordre
      * @return Playlist[]
      */
-    public function findAllOrderBy($champ, $ordre): array{
+    public function findAllOrderBy($champ, $ordre): array
+    {
         return $this->createQueryBuilder('p')
                 ->select(self::SELECT_PARAM)
                 ->addSelect(self::ADDSELECT_NAME)
@@ -62,7 +63,7 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->orderBy('p.'.$champ, $ordre)
                 ->addOrderBy('c.name')
                 ->getQuery()
-                ->getResult();       
+                ->getResult();
     }
 
     /**
@@ -73,11 +74,12 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Playlist[]
      */
-    public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
+    public function findByContainValue($champ, $valeur, $table=""): array
+    {
+        if ($valeur=="") {
             return $this->findAllOrderBy('name', 'ASC');
-        }    
-        if($table==""){      
+        }
+        if ($table=="") {
             return $this->createQueryBuilder('p')
                     ->select(self::SELECT_PARAM)
                     ->addSelect(self::ADDSELECT_NAME)
@@ -91,8 +93,8 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->orderBy('p.name', 'ASC')
                     ->addOrderBy('c.name')
                     ->getQuery()
-                    ->getResult();              
-        }else{   
+                    ->getResult();
+        } else {
             return $this->createQueryBuilder('p')
                     ->select(self::SELECT_PARAM)
                     ->addSelect(self::ADDSELECT_NAME)
@@ -106,10 +108,10 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->orderBy('p.name', 'ASC')
                     ->addOrderBy('c.name')
                     ->getQuery()
-                    ->getResult();              
+                    ->getResult();
             
-        }           
-    }    
+        }
+    }
 
 
     
