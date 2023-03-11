@@ -51,15 +51,14 @@ class FormationsController extends AbstractController
     }
 
     /**
-     * @Route("/formations/tri/{champ}/{ordre}/{table}", name="formations.sort")
+     * @Route("/formations/tri/{champ}/{ordre}", name="formations.sort")
      * @param type $champ
      * @param type $ordre
-     * @param type $table
      * @return Response
      */
-    public function sort($champ, $ordre, $table=""): Response
+    public function sort($champ, $ordre): Response
     {
-        $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+        $formations = $this->formationRepository->findAllOrderBy($champ, $ordre);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PAGE_FORMATION, [
             'formations' => $formations,
@@ -68,16 +67,52 @@ class FormationsController extends AbstractController
     }
     
     /**
-     * @Route("/formations/recherche/{champ}/{table}", name="formations.findallcontain")
+     * @Route("/formations/tri/{champ}/{ordre}/{table}", name="formations.sortByTable")
+     * @param type $champ
+     * @param type $ordre
+     * @param type $table
+     * @return Response
+     */
+    public function sortByTable($champ, $ordre, $table=""): Response
+    {
+        $formations = $this->formationRepository->findAllOrderByInTable($champ, $ordre, $table);
+        $categories = $this->categorieRepository->findAll();
+        return $this->render(self::CHEMIN_PAGE_FORMATION, [
+            'formations' => $formations,
+            'categories' => $categories
+        ]);
+    }
+    
+    
+    /**
+     * @Route("/formations/recherche/{champ}", name="formations.findallcontain")
+     * @param type $champ
+     * @param Request $request
+     * @return Response
+     */
+    public function findAllContain($champ, Request $request): Response
+    {
+        $valeur = $request->get("recherche");
+        $formations = $this->formationRepository->findByContainValue($champ, $valeur);  
+        $categories = $this->categorieRepository->findAll();
+        return $this->render(self::CHEMIN_PAGE_FORMATION, [
+            'formations' => $formations,
+            'categories' => $categories,
+            'valeur' => $valeur
+        ]);
+    }
+    
+    /**
+     * @Route("/formations/recherche/{champ}/{table}", name="formations.findAllContainJoin")
      * @param type $champ
      * @param Request $request
      * @param type $table
      * @return Response
      */
-    public function findAllContain($champ, Request $request, $table=""): Response
+    public function findAllContainJoin($champ, Request $request, $table=""): Response
     {
         $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
+        $formations = $this->formationRepository->findByContainValueInTable($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PAGE_FORMATION, [
             'formations' => $formations,
