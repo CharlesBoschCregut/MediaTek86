@@ -5,10 +5,14 @@
         <group>
             <file>file:/C:/wamp/www/mediatekformation/templates/pages/playlists.html.twig</file>
             <file>file:/C:/wamp/www/mediatekformation/src/Controller/PlaylistsController.php</file>
+            <file>file:/C:/wamp/www/mediatekformation/src/Entity/Formation.php</file>
+            <file>file:/C:/wamp/www/mediatekformation/src/Entity/Categorie.php</file>
+            <file>file:/C:/wamp/www/mediatekformation/src/Entity/Playlist.php</file>
             <file>file:/C:/wamp/www/mediatekformation/src/Repository/FormationRepository.php</file>
             <file>file:/C:/wamp/www/mediatekformation/src/Repository/PlaylistRepository.php</file>
             <file>file:/C:/wamp/www/mediatekformation/src/Controller/FormationsController.php</file>
             <file>file:/C:/wamp/www/mediatekformation/templates/pages/formations.html.twig</file>
+            <file>file:/C:/wamp/www/mediatekformation/config/packages/doctrine.yaml</file>
         </group>
     </open-files>
 </project-private>

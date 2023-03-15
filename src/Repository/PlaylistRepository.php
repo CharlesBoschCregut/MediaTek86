@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Playlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
+
 
 /**
  * @extends ServiceEntityRepository<Playlist>
@@ -52,18 +54,76 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre): array
     {
-        return $this->createQueryBuilder('p')
+        //Récupération des données
+        $data = $this->createQueryBuilder('p')
                 ->select(self::SELECT_PARAM)
                 ->addSelect(self::ADDSELECT_NAME)
                 ->addSelect(self::ADDSELECT_CATEGORIE)
+                ->addSelect("JSON_ARRAYAGG(f.id) nbformation")
                 ->leftjoin('p.formations', 'f')
                 ->leftjoin('f.categories', 'c')
                 ->groupBy('p.id')
                 ->addGroupBy('c.name')
-                ->orderBy('p.'.$champ, $ordre)
                 ->addOrderBy('c.name')
                 ->getQuery()
                 ->getResult();
+        
+        //Construit la string categoriename
+        $results = array();
+        for($i = 0; $i <= count($data) - 1; $i++){
+            for($j = 0; $j <= count($data) - 1; $j++){
+                if($data[$i]['name'] == $data[$j]['name'] && $i != $j){
+                    $data[$i]['categoriename'] = $data[$i]['categoriename'].' '.$data[$j]['categoriename'];
+                    $data[$j]['name'] = $j;
+                }
+            }
+            if(!is_int($data[$i]['name'])){
+                array_push($results, $data[$i]);
+            }
+        }
+        
+        //Construit l'array nbformation
+        for($i = 0; $i <= count($results) - 1; $i++){
+            $results[$i]['nbformation'] = explode(',', $results[$i]['nbformation']);
+        }
+        
+        //tri
+        switch([$champ,$ordre]){
+            case ['name', 'ASC']:
+                //tri par name ASC
+                usort($results, fn($a,$b) => $a['name'] <=> $b['name']);
+            break;
+            
+            case ['name', 'DESC']:
+                //tri par name DESC
+                usort($results, fn($a,$b) => $b['name'] <=> $a['name']);
+            break;
+        
+            case ['nbformation', 'ASC']:
+                //tri par nombre de formation ASC puis par name ASC
+                usort($results, function($a, $b) {
+                    if(count($a['nbformation']) == count($b['nbformation'])){
+                        return $a['name'] <=> $b['name'];
+                    } else {
+                        return count($a['nbformation']) <=> count($b['nbformation']);
+                    }
+                    return $b['name'] <=> $a['name'];
+                });
+            break;
+        
+            case ['nbformation', 'DESC']:
+                //tri par nombre de formation DESC puis par name ASC
+                usort($results, function($a, $b) {
+                    if(count($a['nbformation']) == count($b['nbformation'])){
+                        return $a['name'] <=> $b['name'];
+                    } else {
+                        return count($b['nbformation']) <=> count($a['nbformation']);
+                    }
+                    return $b['name'] <=> $a['name'];
+                });
+            break;
+        }
+        return $results;
     }
 
     /**

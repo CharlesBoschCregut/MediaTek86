@@ -36,6 +36,11 @@
                 <th class="text-center align-top" scope="col">
                     &nbsp;
                 </th>
+                <th>
+                    Nombre de formations
+                    <a href="{{ path('playlists.sort', {champ:'nbformation', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <a href="{{ path('playlists.sort', {champ:'nbformation', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -62,7 +67,8 @@
                                     {% endif %}                                    
                                 {% endfor %}
                             {% endif %}
-                        </td>                    
+                        </td>
+                        <td> {{ playlists[k].nbformation|length}}</td>
                         <td class="text-center">
                             <a href="{{ path('playlists.showone', {id:playlists[k].id}) }}" class="btn btn-secondary">Voir détail</a>
                         </td>
