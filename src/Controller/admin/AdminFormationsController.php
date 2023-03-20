@@ -102,7 +102,7 @@ class AdminFormationsController extends AbstractController{
             return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_FORMATION);
         }     
 
-        return $this->render(self::CHEMIN_PAGE_ADMIN_FORMATION_EDIT, [
+        return $this->render(self::CHEMIN_PAGE_ADMIN_FORMATION_AJOUT, [
             'formation' => $formation,
             'form' => $form->createView()
         ]);      
