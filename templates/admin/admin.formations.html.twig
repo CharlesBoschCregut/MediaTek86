@@ -93,7 +93,7 @@
                     <td>
                         <a href="{{ path('admin.formations.edit', {id:formation.id}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">Éditer</a>
                         <a href="{{ path('admin.formations.suppr', {id:formation.id}) }}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true" onclick="return confirm('Etes-vous sûr de vouloir supprimer {{ formation.title }} ?')" >Supprimer</a>
-                    <td>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

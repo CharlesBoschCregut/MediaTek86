@@ -1,0 +1,22 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <h2>Détail playlist :</h2>
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col">             
+                <div class="row">
+                    <div class="col-auto">
+                        {{ form_row(form.name) }}                                                  
+                    </div>
+                    <div class="col-auto">
+                        {{ form_row(form.description) }}
+                    </div>
+                    <div class="col-auto">
+                        {{ form_row(form.formations) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+{{ form_end(form) }}
+{% endblock %}

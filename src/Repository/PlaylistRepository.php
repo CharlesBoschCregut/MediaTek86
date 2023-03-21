@@ -85,7 +85,11 @@ class PlaylistRepository extends ServiceEntityRepository
         //Construit l'array nbformation
         for($i = 0; $i <= count($results) - 1; $i++){
             $results[$i]['nbformation'] = explode(',', $results[$i]['nbformation']);
+            if ($results[$i]['nbformation'][0] == "[null]"){
+                $results[$i]['nbformation'] = "";
+            } 
         }
+
         
         //tri
         switch([$champ,$ordre]){
