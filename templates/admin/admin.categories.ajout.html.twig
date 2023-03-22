@@ -1,0 +1,13 @@
+{% block body %}
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col">             
+                <div class="row">
+                    <div class="col-auto">
+                        {{ form_row(form.name) }}                                                  
+                    </div>
+                </div>
+            </div>
+        </div>
+{{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block title %}{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block body %}
+    {{ include ('admin/admin.categories.ajout.html.twig') }}
+    <table class="table table-striped">
+        <caption> Tableau des categoires </caption>
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Nom
+                </th>
+                <th class="text-center align-top" scope="col"> 
+                    Édition
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for categorie in categories %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ categorie.name }}
+                        </h5>
+                    </td>
+                    {% if categorie.getFormations()|length > 0 %}
+                        <td>
+                            <a href="" class="btn btn-secondary btn-sm" role="button" onclick="return confirm('Impossible de supprimer cette categorie. Il reste {{ categorie.getFormations()|length}} formations attachées a cette categorie');">Supprimer</a>
+                        </td>
+
+                    {% else %}  
+                        <td>
+                            <a href="{{ path('admin.categories.suppr', {id:categorie.id}) }}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true" onclick="return confirm('Etes-vous sûr de vouloir supprimer {{ categorie.name }} ?')" >Supprimer</a>
+                        </td>
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block javascript %}{% endblock %}
