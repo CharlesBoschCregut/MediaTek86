@@ -93,7 +93,7 @@ class FormationsController extends AbstractController
     public function findAllContain($champ, Request $request): Response
     {
         $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValue($champ, $valeur);  
+        $formations = $this->formationRepository->findByContainValue($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PAGE_FORMATION, [
             'formations' => $formations,
@@ -130,7 +130,7 @@ class FormationsController extends AbstractController
     public function showOne($id): Response
     {
         $formation = $this->formationRepository->find($id);
-        return $this->render(self::CHEMIN_PAGE_FORMATION, [
+        return $this->render('/pages/formation.html.twig', [
             'formation' => $formation
         ]);
     }

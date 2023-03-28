@@ -37,10 +37,11 @@ class PlaylistsController extends AbstractController
     
     private const CHEMIN_PAGE_PLAYLIST = "pages/playlists.html.twig";
     
-    public function __construct(PlaylistRepository $playlistRepository,
-            CategorieRepository $categorieRepository,
-            FormationRepository $formationRespository)
-    {
+    public function __construct(
+        PlaylistRepository $playlistRepository,
+        CategorieRepository $categorieRepository,
+        FormationRepository $formationRespository
+    ) {
         $this->playlistRepository = $playlistRepository;
         $this->categorieRepository = $categorieRepository;
         $this->formationRepository = $formationRespository;
@@ -58,6 +59,20 @@ class PlaylistsController extends AbstractController
             'playlists' => $playlists,
             'categories' => $categories
         ]);
+    }
+    
+    public function getNbFormations($playlists)
+    {
+        $allPlaylists = $this->playlistRepository->findAllOrderBy('name', 'ASC');
+        for ($i = 0; $i <= count($allPlaylists) - 1; $i++) {
+            for ($j = 0; $j <= count($playlists) - 1; $j++) {
+                if ($allPlaylists[$i]['id'] == $playlists[$j]['id']) {
+                    $playlists[$j]['nbformation'] = $allPlaylists[$i]['nbformation'];
+                }
+            }
+        }
+        
+        return $playlists;
     }
 
     /**
@@ -88,6 +103,7 @@ class PlaylistsController extends AbstractController
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
+        $playlists = $this->getNbFormations($playlists);
         return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
             'playlists' => $playlists,
             'categories' => $categories,
@@ -107,11 +123,11 @@ class PlaylistsController extends AbstractController
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValueInTable($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
+        $playlists = $this->getNbFormations($playlists);
+
         return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
             'playlists' => $playlists,
-            'categories' => $categories,
-            'valeur' => $valeur,
-            'table' => $table
+            'categories' => $categories
         ]);
     }
     
@@ -125,7 +141,7 @@ class PlaylistsController extends AbstractController
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
-        return $this->render(self::CHEMIN_PAGE_PLAYLIST, [
+        return $this->render('/pages/playlist.html.twig', [
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
             'playlistformations' => $playlistFormations

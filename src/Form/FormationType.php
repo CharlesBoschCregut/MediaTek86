@@ -39,7 +39,7 @@ class FormationType extends AbstractType
             ->add('publishedAt', DateTimeType::class, [
                 'widget' => 'choice',
                  'years' => range(date('Y'), date('Y')-34),
-                 'months' => range(1,12),
+                 'months' => range(1, 12),
                  'days' => range(1, 31),
             ])
                 

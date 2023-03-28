@@ -12,9 +12,11 @@
         Vous pouvez aussi retrouver les vidéos regroupées dans des playlists, dans la partie <strong><a href="{{ path('playlists') }}" class="link-info">Playlists</a></strong>.
     </p>
     <p>
-        Voici les <strong>deux dernières formations</strong> ajoutées au catalogue :
         <table class="table">
             <caption> Les deux dernières formations</caption>
+            <thead>
+            <th class="mt-3"> Voici les <strong>deux dernières formations</strong> ajoutées au catalogue : </th>
+            </thead>
             <tr>
                 {% for formation in formations %}
                     <td>
@@ -43,7 +45,6 @@
                         </div>                    
                 {% endfor %}    
             </tr>
-
         </table>        
     </p>
 {% endblock %}

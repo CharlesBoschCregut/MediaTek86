@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/mediatekformation/src/Entity/User.php</file>
-            <file>file:/C:/wamp/www/mediatekformation/src/Controller/LoginController.php</file>
-            <file>file:/C:/wamp/www/mediatekformation/templates/login/index.html.twig</file>
-            <file>file:/C:/wamp/www/mediatekformation/src/Security/KeycloakAuthenticator.php</file>
-            <file>file:/C:/wamp/www/mediatekformation/config/packages/security.yaml</file>
-            <file>file:/C:/wamp/www/mediatekformation/src/Controller/OAuthController.php</file>
+            <file>file:/C:/wamp/www/mediatekformation/templates/pages/playlists.html.twig</file>
+            <file>file:/C:/wamp/www/mediatekformation/tests/Controller/PlaylistControllerTest.php</file>
+            <file>file:/C:/wamp/www/mediatekformation/tests/Controller/FormationControllerTest.php</file>
         </group>
     </open-files>
 </project-private>

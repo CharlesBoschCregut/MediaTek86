@@ -28,7 +28,9 @@ class Formation
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime
+     * @Assert\NotNull
+     * @Assert\Type("DateTime")
+     * @Assert\LessThan("today")
      */
     private $publishedAt;
 

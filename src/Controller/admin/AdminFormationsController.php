@@ -16,7 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author Charles Bosch-Crégut
  */
-class AdminFormationsController extends AbstractController{
+class AdminFormationsController extends AbstractController
+{
     
     /**
      *
@@ -61,7 +62,8 @@ class AdminFormationsController extends AbstractController{
      * @param Formation formation
      * @return Response
      */
-    public function suppr(Formation $formation): Response{
+    public function suppr(Formation $formation): Response
+    {
         $this->formationRepository->remove($formation, true);
         return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_FORMATION);
     }
@@ -72,11 +74,12 @@ class AdminFormationsController extends AbstractController{
      * @param Request $request
      * @return Response
      */
-    public function edit(Formation $formation, Request $request): Response{
+    public function edit(Formation $formation, Request $request): Response
+    {
         $form = $this->createForm(FormationType::class, $formation);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->formationRepository->add($formation, true);
             return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_FORMATION);
         }
@@ -84,7 +87,7 @@ class AdminFormationsController extends AbstractController{
         return $this->render(self::CHEMIN_PAGE_ADMIN_FORMATION_EDIT, [
             'formation' => $formation,
             'form' => $form->createView()
-        ]);        
+        ]);
     }
     
     /**
@@ -92,21 +95,22 @@ class AdminFormationsController extends AbstractController{
      * @param Request $request
      * @return Response
      */
-    public function ajout(Request $request): Response{
+    public function ajout(Request $request): Response
+    {
         $formation = new Formation();
         $form = $this->createForm(FormationType::class, $formation);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->formationRepository->add($formation, true);
             return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_FORMATION);
-        }     
+        }
 
         return $this->render(self::CHEMIN_PAGE_ADMIN_FORMATION_AJOUT, [
             'formation' => $formation,
             'form' => $form->createView()
-        ]);      
-    } 
+        ]);
+    }
     
     /**
      * @Route("admin/formations/tri/{champ}/{ordre}", name="admin.formations.sort")
@@ -151,7 +155,7 @@ class AdminFormationsController extends AbstractController{
     public function findAllContain($champ, Request $request): Response
     {
         $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValue($champ, $valeur);  
+        $formations = $this->formationRepository->findByContainValue($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PAGE_ADMIN_FORMATION, [
             'formations' => $formations,

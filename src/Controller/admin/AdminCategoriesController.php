@@ -16,7 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author Charles Bosch-Crégut
  */
-class AdminCategoriesController extends AbstractController{
+class AdminCategoriesController extends AbstractController
+{
     
     /**
      *
@@ -53,7 +54,7 @@ class AdminCategoriesController extends AbstractController{
         $form = $this->createForm(CategorieType::class, $categorie);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($categorie);
             $entityManager->flush();
@@ -74,7 +75,8 @@ class AdminCategoriesController extends AbstractController{
      * @param Categorie categorie
      * @return Response
      */
-    public function suppr(Categorie $categorie): Response{
+    public function suppr(Categorie $categorie): Response
+    {
         $this->categorieRepository->remove($categorie, true);
         return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_CATEGORIE);
     }

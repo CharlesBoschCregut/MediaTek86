@@ -42,13 +42,14 @@ class AdminPlaylistsController extends AbstractController
     private const CHEMIN_PAGE_ADMIN_PLAYLIST_EDIT = "admin/admin.playlists.edit.html.twig";
     private const CHEMIN_PAGE_ADMIN_PLAYLIST_AJOUT = "admin/admin.playlists.ajout.html.twig";
     
-    public function __construct(PlaylistRepository $playlistRepository,
-            CategorieRepository $categorieRepository,
-            FormationRepository $formationRespository)
-    {
+    public function __construct(
+        PlaylistRepository $playlistRepository,
+        CategorieRepository $categorieRepository,
+        FormationRepository $formationRepository
+    ) {
         $this->playlistRepository = $playlistRepository;
         $this->categorieRepository = $categorieRepository;
-        $this->formationRepository = $formationRespository;
+        $this->formationRepository = $formationRepository;
     }
     
     /**
@@ -70,7 +71,8 @@ class AdminPlaylistsController extends AbstractController
      * @param Playlist playlist
      * @return Response
      */
-    public function suppr(Playlist $playlist): Response{
+    public function suppr(Playlist $playlist): Response
+    {
         $this->playlistRepository->remove($playlist, true);
         return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_PLAYLIST);
     }
@@ -81,11 +83,12 @@ class AdminPlaylistsController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function edit(Playlist $playlist, Request $request): Response{
+    public function edit(Playlist $playlist, Request $request): Response
+    {
         $form = $this->createForm(PlaylistType::class, $playlist);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->playlistRepository->add($playlist, true);
             return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_PLAYLIST);
         }
@@ -93,7 +96,7 @@ class AdminPlaylistsController extends AbstractController
         return $this->render(self::CHEMIN_PAGE_ADMIN_PLAYLIST_EDIT, [
             'playlist' => $playlist,
             'form' => $form->createView()
-        ]);        
+        ]);
     }
     
     /**
@@ -101,20 +104,21 @@ class AdminPlaylistsController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function ajout(Request $request): Response{
+    public function ajout(Request $request): Response
+    {
         $playlist = new Playlist();
         $form = $this->createForm(PlaylistType::class, $playlist);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->playlistRepository->add($playlist, true);
             return $this->redirectToRoute(self::CHEMIN_ROUTE_ADMIN_PLAYLIST);
-        }     
+        }
 
         return $this->render(self::CHEMIN_PAGE_ADMIN_PLAYLIST_AJOUT, [
             'playlist' => $playlist,
             'form' => $form->createView()
-        ]);      
+        ]);
     }
     
     
@@ -164,13 +168,20 @@ class AdminPlaylistsController extends AbstractController
     public function findAllContainCategorie($champ, Request $request, $table=""): Response
     {
         $valeur = $request->get("recherche");
+        $allPlaylists = $this->playlistRepository->findAllOrderBy('name', 'ASC');
         $playlists = $this->playlistRepository->findByContainValueInTable($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
+        for ($i = 0; $i <= count($allPlaylists) - 1; $i++) {
+            for ($j = 0; $j <= count($playlists) - 1; $j++) {
+                if ($allPlaylists[$i]['id'] == $playlists[$j]['id']) {
+                    $playlists[$j]['nbformation'] = $allPlaylists[$i]['nbformation'];
+                }
+            }
+        }
+
         return $this->render(self::CHEMIN_PAGE_ADMIN_PLAYLIST, [
             'playlists' => $playlists,
-            'categories' => $categories,
-            'valeur' => $valeur,
-            'table' => $table
+            'categories' => $categories
         ]);
     }
     

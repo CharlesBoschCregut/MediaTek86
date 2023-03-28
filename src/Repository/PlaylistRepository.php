@@ -68,68 +68,78 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
         
-        //Construit la string categoriename
-        $results = array();
-        for($i = 0; $i <= count($data) - 1; $i++){
-            for($j = 0; $j <= count($data) - 1; $j++){
-                if($data[$i]['name'] == $data[$j]['name'] && $i != $j){
-                    $data[$i]['categoriename'] = $data[$i]['categoriename'].' '.$data[$j]['categoriename'];
-                    $data[$j]['name'] = $j;
-                }
-            }
-            if(!is_int($data[$i]['name'])){
-                array_push($results, $data[$i]);
-            }
-        }
-        
-        //Construit l'array nbformation
-        for($i = 0; $i <= count($results) - 1; $i++){
-            $results[$i]['nbformation'] = explode(',', $results[$i]['nbformation']);
-            if ($results[$i]['nbformation'][0] == "[null]"){
-                $results[$i]['nbformation'] = "";
-            } 
-        }
+        $results = $this->processData($data);
 
         
         //tri
-        switch([$champ,$ordre]){
+        switch ([$champ,$ordre]) {
+            default:
+                //tri par name ASC
+                usort($results, fn($a, $b) => $a['name'] <=> $b['name']);
+            break;
             case ['name', 'ASC']:
                 //tri par name ASC
-                usort($results, fn($a,$b) => $a['name'] <=> $b['name']);
+                usort($results, fn($a, $b) => $a['name'] <=> $b['name']);
             break;
             
             case ['name', 'DESC']:
                 //tri par name DESC
-                usort($results, fn($a,$b) => $b['name'] <=> $a['name']);
+                usort($results, fn($a, $b) => $b['name'] <=> $a['name']);
             break;
         
             case ['nbformation', 'ASC']:
                 //tri par nombre de formation ASC puis par name ASC
-                usort($results, function($a, $b) {
-                    if(count($a['nbformation']) == count($b['nbformation'])){
+                usort($results, function ($a, $b) {
+                    if (count($a['nbformation']) == count($b['nbformation'])) {
                         return $a['name'] <=> $b['name'];
                     } else {
                         return count($a['nbformation']) <=> count($b['nbformation']);
                     }
-                    return $b['name'] <=> $a['name'];
                 });
             break;
         
             case ['nbformation', 'DESC']:
                 //tri par nombre de formation DESC puis par name ASC
-                usort($results, function($a, $b) {
-                    if(count($a['nbformation']) == count($b['nbformation'])){
-                        return $a['name'] <=> $b['name'];
-                    } else {
-                        return count($b['nbformation']) <=> count($a['nbformation']);
+                usort($results, function ($a, $b) {
+                        if (count($a['nbformation']) == count($b['nbformation'])) {
+                            return $a['name'] <=> $b['name'];
+                        } else {
+                            return count($b['nbformation']) <=> count($a['nbformation']);
+                        }
                     }
-                    return $b['name'] <=> $a['name'];
-                });
+                );
             break;
         }
         return $results;
     }
 
+    private function processData(array $data): array
+    {
+        //Construit la string categoriename
+        $results = array();
+        for ($i = 0; $i <= count($data) - 1; $i++) {
+            for ($j = 0; $j <= count($data) - 1; $j++) {
+                if ($data[$i]['name'] == $data[$j]['name'] && $i != $j) {
+                    $data[$i]['categoriename'] = $data[$i]['categoriename'].' '.$data[$j]['categoriename'];
+                    $data[$j]['name'] = $j;
+                }
+            }
+            if (!is_int($data[$i]['name'])) {
+                array_push($results, $data[$i]);
+            }
+        }
+        
+        //Construit l'array nbformation
+        for ($i = 0; $i <= count($results) - 1; $i++) {
+            $results[$i]['nbformation'] = explode(',', $results[$i]['nbformation']);
+            if ($results[$i]['nbformation'][0] == "[null]") {
+                $results[$i]['nbformation'] = array();
+            }
+        }
+
+        return $results;
+    }
+    
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
