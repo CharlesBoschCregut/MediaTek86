@@ -15,12 +15,20 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class FormationRepositoryTest extends KernelTestCase
 {
+    /**
+     * Retourne une instance du repository
+     * @return FormationRepository
+     */
     public function getRepository(): FormationRepository
     {
         self::bootKernel();
         return self::getContainer()->get(FormationRepository::class);
     }
     
+    /**
+     * Enregistre une nouvelle formation
+     * @return Formation
+     */
     public function newFormation(): Formation
     {
         return (new Formation())
@@ -28,12 +36,19 @@ class FormationRepositoryTest extends KernelTestCase
             ->setVideoId('-testsV');
     }
     
+    /**
+     * Enregistre une nouvelle playlist
+     * @return Playlist
+     */
     public function newPlaylist(): Playlist
     {
         return (new Playlist())
             ->setName("TEST REPO");
     }
     
+    /**
+     * Teste l'enregistrement de foramtion
+     */
     public function testAddFormation()
     {
         $repository = $this->getRepository();
@@ -43,6 +58,9 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertEquals($nbFormations + 1, $repository->count([]), "Erreur lors de l'ajout");
     }
     
+    /**
+     * Teste la suppression d'une formation
+     */
     public function testSupprFormation()
     {
         $repository = $this->getRepository();
@@ -53,6 +71,9 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertEquals($nbFormations - 1, $repository->count([]), "Erreur lors de la suppression");
     }
     
+    /**
+     * Teste que la méthode findAllOrderBy retourne les bonnes formations triées en fonction des paramètres
+     */
     public function testFindAllOrderBy()
     {
         $repository = $this->getRepository();
@@ -77,6 +98,9 @@ class FormationRepositoryTest extends KernelTestCase
         );
     }
     
+    /**
+     *Teste que la méthode findAllOrderByInTable retourne les bonnes données triées en fonction des paramètres
+     */
     public function testFindAllOrderByInTable()
     {
         $repository = $this->getRepository();
@@ -96,6 +120,9 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertEquals($results[0]->getPlaylist(), $playlist, "Erreur lors de findAllOrderBy");
     }
     
+    /**
+     * Teste que la méthode findByContainValue retourne les formations données
+     */
     public function testFindByContainValue()
     {
         $repository = $this->getRepository();
@@ -105,6 +132,9 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertEquals($results[0]->getTitle(), $formation->getTitle(), "Erreur lors de findByContainValue");
     }
     
+    /**
+     *Teste que la méthode findByContainValueInTable retourne les bonnes playlists
+     */
     public function testFindByContainValueInTable()
     {
         $repository = $this->getRepository();
@@ -128,6 +158,10 @@ class FormationRepositoryTest extends KernelTestCase
         );
         
     }
+    
+    /**
+     * Teste que la méthode findAllLasted retourne le bon nombre de formations
+     */
     public function testFindAllLasted()
     {
         $repository = $this->getRepository();
@@ -147,6 +181,10 @@ class FormationRepositoryTest extends KernelTestCase
             "Erreur lors de testFindAllLasted, la formation trouvée n'est pas la dernière en date"
         );
     }
+    
+    /**
+     * Teste que la méthode findAllForOnePlaylist retourne les bonnes formations
+     */
     public function testFindAllForOnePlaylist()
     {
         $repository = $this->getRepository();

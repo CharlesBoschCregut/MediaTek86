@@ -18,7 +18,6 @@ use Doctrine\ORM\Query\Expr;
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
-    
     private const SELECT_PARAM = 'p.id id';
     private const ADDSELECT_NAME = 'p.name name';
     private const ADDSELECT_CATEGORIE = 'c.name categoriename';
@@ -27,7 +26,13 @@ class PlaylistRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Playlist::class);
     }
-
+    
+    /**
+     *
+     * @param Playlist $entity
+     * @param bool $flush
+     * @return void
+     */
     public function add(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -37,6 +42,12 @@ class PlaylistRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     *
+     * @param Playlist $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -113,6 +124,11 @@ class PlaylistRepository extends ServiceEntityRepository
         return $results;
     }
 
+    /**
+     * Organise les données
+     * @param array $data
+     * @return array
+     */
     private function processData(array $data): array
     {
         //Construit la string categoriename

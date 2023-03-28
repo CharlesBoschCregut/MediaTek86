@@ -13,13 +13,28 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CategorieType extends AbstractType
 {
+    /**
+     *
+     * @var type
+     */
     private $entityManager;
 
+    /**
+     *
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
-
+    
+    /**
+     * * Établi les types de champs et les données
+     * du formaulaire d'ajout de catégorie
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -35,6 +50,10 @@ class CategorieType extends AbstractType
         ;
     }
     
+    /**
+     *
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -45,6 +64,11 @@ class CategorieType extends AbstractType
         ]);
     }
 
+    /**
+     *
+     * @param type $value
+     * @param ExecutionContextInterface $context
+     */
     public function validateCategorieName($value, ExecutionContextInterface $context)
     {
         $existingCategorie = $this->entityManager->getRepository(Categorie::class)->findOneBy(['name' => $value]);

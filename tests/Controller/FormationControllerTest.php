@@ -14,11 +14,18 @@ class FormationControllerTest extends WebTestCase
 {
     private const FIRST_FORMATION = "Eclipse n°8 : Déploiement";
     
+    /**
+     * Retourne le chemin d'acces a la page des formations
+     * @return string
+     */
     public function getFormationPage() : string
     {
         return '/formations';
     }
     
+    /**
+     * Teste l'accès a la page des formations
+     */
     public function testAccesPage()
     {
         $client = static::createClient();
@@ -26,6 +33,14 @@ class FormationControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
     
+    /**
+     * Simule le click sur $buttonid
+     * Vérifie l'acces a la page $expectedURI
+     * Vérifie que les résultats correspondent a $expectedResult
+     * @param string $buttonId
+     * @param string $expectedURI
+     * @param array $expectedResult
+     */
     public function ClickThis(string $buttonId, string $expectedURI, array $expectedResult)
     {
         $client = static::createClient();
@@ -39,7 +54,9 @@ class FormationControllerTest extends WebTestCase
         $this->assertSelectorTextContains($expectedResult[0], $expectedResult[1]);
     }
     
-    
+    /**
+     * Teste le bouton ">" qui a l'id sortTitleDESC
+     */
     public function testSortTitleDesc()
     {
         $this->ClickThis(
@@ -49,6 +66,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     *  Teste le bouton "<" qui a l'id sortTitleASC
+     */
     public function testSortTitleAsc()
     {
         $this->ClickThis(
@@ -58,6 +78,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     *  Teste le bouton "<" qui a l'id sortPlaylistASC
+     */
     public function testSortPlaylistAsc()
     {
         $this->ClickThis(
@@ -67,6 +90,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     *  Teste le bouton ">" qui a l'id sortPlaylistDESC
+     */
     public function testSortPlaylistDesc()
     {
         $this->ClickThis(
@@ -76,6 +102,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     *  Teste le bouton "<" qui a l'id sortDateASC
+     */
     public function testSortDateAsc()
     {
         $this->ClickThis(
@@ -85,6 +114,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     *  Teste le bouton ">" qui a l'id sortDateDESC
+     */
     public function testSortDateDesc()
     {
         $this->ClickThis(
@@ -94,6 +126,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     * Teste le filtre par titre
+     */
     public function testFiltreTitle()
     {
         $client = static::createClient();
@@ -105,6 +140,9 @@ class FormationControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h5', self::FIRST_FORMATION);
     }
     
+    /**
+     * Teste le filtre par playlist
+     */
     public function testFiltrePlaylist()
     {
         $client = static::createClient();
@@ -119,6 +157,9 @@ class FormationControllerTest extends WebTestCase
         );
     }
     
+    /**
+     * Teste le filtre pas catégorie
+     */
     public function testFiltreCategories()
     {
         $client = static::createClient();
@@ -143,6 +184,10 @@ class FormationControllerTest extends WebTestCase
         $this->assertCount(15, $crawler->filter('h5'));
     }
     
+    /**
+     * Teste que le click sur la miniature d'une formation
+     * Envois sur la bonne page et retourne les bonnes données
+     */
     public function testShowOne()
     {
         $this->ClickThis(

@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AccueilControllerTest extends WebTestCase
 {
+    /**
+     * Teste l'accès a la page d'acceuil
+     */
     public function testAccesPage()
     {
         $client = static::createClient();
@@ -24,6 +27,9 @@ class AccueilControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
     
+    /**
+     * Teste l'accès a la page des Conditions Générales d'Utilisation
+     */
     public function testAccesCgu()
     {
         $client = static::createClient();

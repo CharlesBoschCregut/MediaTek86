@@ -12,6 +12,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 class PlaylistType extends AbstractType
 {
 
+    /**
+     * Établi les types de champs et les données
+     * du formaulaire d'ajout et d'édition de playlist
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

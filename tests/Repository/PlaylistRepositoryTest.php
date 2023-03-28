@@ -22,18 +22,29 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class PlaylistRepositoryTest extends KernelTestCase
 {
+    /**
+     * Retourne une instance du repository
+     * @return PlaylistRepository
+     */
     public function getRepository(): PlaylistRepository
     {
         self::bootKernel();
         return self::getContainer()->get(PlaylistRepository::class);
     }
     
+    /**
+     * Enregistre une nouvelle playlist
+     * @return PlaylistE
+     */
     public function newPlaylist(): Playlist
     {
         return (new Playlist())
             ->setName("TEST REPO");
     }
     
+    /**
+     * Teste l'enregistrement de playlist
+     */
     public function testAddPlaylist()
     {
         $repository = $this->getRepository();
@@ -43,6 +54,9 @@ class PlaylistRepositoryTest extends KernelTestCase
         $this->assertEquals($nbplaylists + 1, $repository->count([]), "Erreur lors de l'ajout");
     }
     
+    /**
+     * Teste la suppression d'une playlist
+     */
     public function testSupprPlaylist()
     {
         $repository = $this->getRepository();
@@ -53,6 +67,9 @@ class PlaylistRepositoryTest extends KernelTestCase
         $this->assertEquals($nbplaylists - 1, $repository->count([]), "Erreur lors de la suppression");
     }
     
+    /**
+     * Teste que la méthode findAllOrderBy retourne les bonnes playlists triées en fonction des paramètres
+     */
     public function testFindAllOrderBy()
     {
         $repository = $this->getRepository();
@@ -90,6 +107,9 @@ class PlaylistRepositoryTest extends KernelTestCase
         );
     }
     
+    /**
+     * Teste que que la méthode findByContainValue retourne bien les bonnes playlists
+     */
     public function testFindByContainValue()
     {
         $repository = $this->getRepository();
@@ -104,6 +124,10 @@ class PlaylistRepositoryTest extends KernelTestCase
         );
     }
     
+    /**
+     * Teste que la méthode findByContainValueInTable retourne bien les playlists
+     * Contenants des formations avec une catégorie donnée
+     */
     public function testFindByContainValueInTable()
     {
         $repository = $this->getRepository();

@@ -22,19 +22,30 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class CategorieRepositoryTest extends KernelTestCase
 {
+    /**
+     * Retourne une instance du repository
+     * @return CategorieRepository
+     */
     public function getRepository(): CategorieRepository
     {
         self::bootKernel();
         return self::getContainer()->get(CategorieRepository::class);
     }
     
+    /**
+     * Enregiste une nouvelle catégorie
+     * @return Categorie
+     */
     public function newCategorie(): Categorie
     {
         return (new Categorie())
             ->setName("LES TESTS");
     }
     
-    public function testAddPlaylist()
+    /**
+     * Teste l'enregistrement de nouvelle catégorie
+     */
+    public function testAddCategorie()
     {
         $repository = $this->getRepository();
         $categorie = $this->newCategorie();
@@ -43,7 +54,10 @@ class CategorieRepositoryTest extends KernelTestCase
         $this->assertEquals($nbcategories + 1, $repository->count([]), "Erreur lors de l'ajout");
     }
     
-    public function testSupprPlaylist()
+    /**
+     * Teste la suppression d'une Catégorie
+     */
+    public function testSupprCategorie()
     {
         $repository = $this->getRepository();
         $categorie = $this->newCategorie();
@@ -53,6 +67,9 @@ class CategorieRepositoryTest extends KernelTestCase
         $this->assertEquals($nbcategories - 1, $repository->count([]), "Erreur lors de la suppression");
     }
     
+    /**
+     * Teste que la méthode findAllForOnePlaylist retourne les bonnes données
+     */
     public function testFindAllForOnePlaylist()
     {
         $repository = $this->getRepository();

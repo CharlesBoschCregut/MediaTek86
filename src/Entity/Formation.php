@@ -60,22 +60,35 @@ class Formation
      * @ORM\ManyToMany(targetEntity=Categorie::class, inversedBy="formations")
      */
     private $categories;
-
+    
     public function __construct()
     {
         $this->categories = new ArrayCollection();
     }
 
+    /**
+     *
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     *
+     * @return DateTimeInterface|null
+     */
     public function getPublishedAt(): ?DateTimeInterface
     {
         return $this->publishedAt;
     }
 
+    /**
+     *
+     * @param DateTimeInterface|null $publishedAt
+     * @return self
+     */
     public function setPublishedAt(?DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
@@ -83,6 +96,10 @@ class Formation
         return $this;
     }
     
+    /**
+     *
+     * @return string
+     */
     public function getPublishedAtString(): string
     {
         if ($this->publishedAt == null) {
@@ -91,11 +108,20 @@ class Formation
         return $this->publishedAt->format('d/m/Y');
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     *
+     * @param string|null $title
+     * @return self
+     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -103,11 +129,20 @@ class Formation
         return $this;
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     *
+     * @param string|null $description
+     * @return self
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -115,21 +150,38 @@ class Formation
         return $this;
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getMiniature(): ?string
     {
         return self::CHEMIN_IMAGE.$this->videoId."/default.jpg";
     }
-
+    
+    /**
+     *
+     * @return string|null
+     */
     public function getPicture(): ?string
     {
         return self::CHEMIN_IMAGE.$this->videoId."/hqdefault.jpg";
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getVideoId(): ?string
     {
         return $this->videoId;
     }
 
+    /**
+     *
+     * @param string|null $videoId
+     * @return self
+     */
     public function setVideoId(?string $videoId): self
     {
         $this->videoId = $videoId;
@@ -137,11 +189,20 @@ class Formation
         return $this;
     }
 
+    /**
+     *
+     * @return Playlist|null
+     */
     public function getPlaylist(): ?Playlist
     {
         return $this->playlist;
     }
 
+    /**
+     *
+     * @param Playlist|null $playlist
+     * @return self
+     */
     public function setPlaylist(?Playlist $playlist): self
     {
         $this->playlist = $playlist;
@@ -157,6 +218,11 @@ class Formation
         return $this->categories;
     }
 
+    /**
+     *
+     * @param Categorie $category
+     * @return self
+     */
     public function addCategory(Categorie $category): self
     {
         if (!$this->categories->contains($category)) {
@@ -166,6 +232,11 @@ class Formation
         return $this;
     }
 
+    /**
+     *
+     * @param Categorie $category
+     * @return self
+     */
     public function removeCategory(Categorie $category): self
     {
         $this->categories->removeElement($category);

@@ -41,16 +41,29 @@ class Playlist
         $this->formations = new ArrayCollection();
     }
 
+    /**
+     *
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     *
+     * @param string|null $name
+     * @return self
+     */
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -58,11 +71,20 @@ class Playlist
         return $this;
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     *
+     * @param string|null $description
+     * @return self
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -78,6 +100,11 @@ class Playlist
         return $this->formations;
     }
 
+    /**
+     *
+     * @param Formation $formation
+     * @return self
+     */
     public function addFormation(Formation $formation): self
     {
         if (!$this->formations->contains($formation)) {
@@ -88,6 +115,11 @@ class Playlist
         return $this;
     }
 
+    /**
+     *
+     * @param Formation $formation
+     * @return self
+     */
     public function removeFormation(Formation $formation): self
     {
         if ($this->formations->removeElement($formation) && $formation->getPlaylist() === $this) {
